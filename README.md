@@ -10,5 +10,8 @@ L'architecture de notre système est conçue pour obtenir et traiter les donnée
 
 ## Architecture sur QSYS
 
+Concernant l'architecture, elle est un peu similaire à celle du LAB2 du point de vu de l'affichage de données sur le 7 segments, à savoir deux PIO, chacun comprenant trois digits, générant ainsi deux sorties logicielle de 12 bits, à savoir 4 bits par digit. Au niveau matériel, un composant VHDL, "bin_to_7seg.vhd", a été développé comme décodeur pour les afficheurs 7 segments. La sortie de notre architecture globale comprend donc 2 fois 21 bits pour correspondre aux entrées des décodeurs 7 segments de chaque afficheur.
+En plus du Opencore I2C permettant la communication avec le gyroscope :
+
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/7aed2c48-2c61-4f62-825b-0511d76dddd4)
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/21ffef58-6d63-4a73-a9a1-1539b2d860a0)
