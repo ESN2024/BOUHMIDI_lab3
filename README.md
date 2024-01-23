@@ -16,3 +16,11 @@ En plus du Opencore I2C permettant la communication avec le gyroscope :
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/c3f783c9-6827-444d-9444-b6808dd82b09)
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/f013be6e-298a-4293-9599-b467486bfaf5)
 
+
+
+
+##Affichage des données sur le shell nios 
+Affichage des données avec le timer cadencé à 1s
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/7da6dbf7-6eda-432e-b2e4-629c9d0dbe12)
+
+
