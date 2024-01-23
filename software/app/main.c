@@ -42,8 +42,7 @@ static void init_interrupt_pio()
 
 static void irqhandler_bp_select (void * context)
 {		
-	alt_printf("POPO\n");
-		select++;
+	select++;
 	if (select > 2)
 		select = 0;
 
@@ -79,6 +78,34 @@ void I2C_write_gyro(alt_u8 data, __int16_t reg)
 	I2C_write(OPENCORES_I2C_0_BASE, data, 1);
 }
 
+
+void affiche(__int32_t data_in)
+{
+	int unit;
+	int dis;
+	int cen;
+	int mil;
+	int data1;
+	int data2;
+		
+	mil = data_in / 1000;
+	cen = data_in / 100;
+	dis = (data_in /10 ) % 10;
+	unit = data_in % 10;
+	data1 = (cen << 8) | (dis << 4) | unit;
+	
+	if (data_in < 0)
+		data2 = 0b11110000 | mil;
+	else 
+		data2 = mil;
+	IOWR_ALTERA_AVALON_PIO_DATA(SEG_1_BASE,data1);
+	IOWR_ALTERA_AVALON_PIO_DATA(SEG_2_BASE,data2);
+	
+	
+	
+	
+}
+
 void handle_timer_interrupt(void*p, alt_u32 param)
 
 {
@@ -88,28 +115,34 @@ void handle_timer_interrupt(void*p, alt_u32 param)
 	__int32_t data_y_msb;
 	__int32_t data_z_lsb;
 	__int32_t data_z_msb;
+	
+
+
+	data_x_lsb = I2C_read_gyro(DATAX0);
+	data_x_msb = I2C_read_gyro(DATAX1);	
+	data_x = (data_x_msb << 8) | data_x_lsb;
+	data_y_lsb = I2C_read_gyro(DATAY0);
+	data_y_msb = I2C_read_gyro(DATAY1);
+	data_y = (data_y_msb << 8) | data_y_lsb;
+	data_z_lsb = I2C_read_gyro(DATAZ0);
+	data_z_msb = I2C_read_gyro(DATAZ1);
+	data_z = (data_z_msb << 8) | data_z_lsb;
+	
+	
+
 
 	IOWR_ALTERA_AVALON_TIMER_STATUS(TIMER_0_BASE, 0b1);
-	alt_printf("%x\n", select);
+
 	switch (select) 
 	{
 		case 0:
-			data_x_lsb = I2C_read_gyro(DATAX0);
-			data_x_msb = I2C_read_gyro(DATAX1);	
-			data_x = (data_x_msb << 8) | data_x_lsb;
-			alt_printf("X = %x\n", data_x);
+			affiche(data_x);
 		break;
 		case 1:
-			data_y_lsb = I2C_read_gyro(DATAY0);
-			data_y_msb = I2C_read_gyro(DATAY1);
-			data_y = (data_y_msb << 8) | data_y_lsb;
-			alt_printf("Y = %x\n", data_y);
+			affiche(data_y);
 		break;
 		case 2:
-			data_z_lsb = I2C_read_gyro(DATAZ0);
-			data_z_msb = I2C_read_gyro(DATAZ1);
-			data_z = (data_z_msb << 8) | data_z_lsb;
-			alt_printf("Z = %x\n", data_z);
+			affiche(data_z);
 		break;
 	}
 
