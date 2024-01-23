@@ -27,7 +27,29 @@
 __int32_t data_x;
 __int32_t data_y;
 __int32_t data_z;
+
+char select = 0;
+
+static void init_interrupt_pio()
+{
+    IOWR_ALTERA_AVALON_PIO_IRQ_MASK(SELECT_BASE,0x01);
+
+    IOWR_ALTERA_AVALON_PIO_EDGE_CAP(SELECT_BASE,0x01);
+
 	
+}
+
+
+static void irqhandler_bp_select (void * context)
+{		
+	alt_printf("POPO\n");
+		select++;
+	if (select > 2)
+		select = 0;
+
+    IOWR_ALTERA_AVALON_PIO_EDGE_CAP(SELECT_BASE,0x01);
+}
+
 
 
 
@@ -68,25 +90,28 @@ void handle_timer_interrupt(void*p, alt_u32 param)
 	__int32_t data_z_msb;
 
 	IOWR_ALTERA_AVALON_TIMER_STATUS(TIMER_0_BASE, 0b1);
-	
-	
-	data_x_lsb = I2C_read_gyro(DATAX0);
-	data_x_msb = I2C_read_gyro(DATAX1);
-	data_y_lsb = I2C_read_gyro(DATAY0);
-	data_y_msb = I2C_read_gyro(DATAY1);
-	data_z_lsb = I2C_read_gyro(DATAZ0);
-	data_z_msb = I2C_read_gyro(DATAZ1);
-	
-	data_x = (data_x_msb << 8) | data_x_lsb;
-	data_y = (data_y_msb << 8) | data_y_lsb;
-	data_z = (data_z_msb << 8) | data_z_lsb;
-	
-	alt_printf("X = %x\n", data_x);
-	alt_printf("Y = %x\n", data_y);
-	alt_printf("Z = %x\n", data_z);
-	
-
-
+	alt_printf("%x\n", select);
+	switch (select) 
+	{
+		case 0:
+			data_x_lsb = I2C_read_gyro(DATAX0);
+			data_x_msb = I2C_read_gyro(DATAX1);	
+			data_x = (data_x_msb << 8) | data_x_lsb;
+			alt_printf("X = %x\n", data_x);
+		break;
+		case 1:
+			data_y_lsb = I2C_read_gyro(DATAY0);
+			data_y_msb = I2C_read_gyro(DATAY1);
+			data_y = (data_y_msb << 8) | data_y_lsb;
+			alt_printf("Y = %x\n", data_y);
+		break;
+		case 2:
+			data_z_lsb = I2C_read_gyro(DATAZ0);
+			data_z_msb = I2C_read_gyro(DATAZ1);
+			data_z = (data_z_msb << 8) | data_z_lsb;
+			alt_printf("Z = %x\n", data_z);
+		break;
+	}
 
 }
 
@@ -103,11 +128,10 @@ int main()
 	
 	I2C_init(OPENCORES_I2C_0_BASE, ALT_CPU_CPU_FREQ, SPEED_FREQ);
 	
-
+	init_interrupt_pio();
+	alt_irq_register(SELECT_IRQ,NULL,irqhandler_bp_select);
 	
-	
-	
-	IOWR_ALTERA_AVALON_TIMER_CONTROL(TIMER_0_BASE,ALTERA_AVALON_TIMER_CONTROL_CONT_MSK | ALTERA_AVALON_TIMER_CONTROL_START_MSK | ALTERA_AVALON_TIMER_CONTROL_ITO_MSK);
+	//IOWR_ALTERA_AVALON_TIMER_CONTROL(TIMER_0_BASE,ALTERA_AVALON_TIMER_CONTROL_CONT_MSK | ALTERA_AVALON_TIMER_CONTROL_START_MSK | ALTERA_AVALON_TIMER_CONTROL_ITO_MSK);
 	alt_irq_register(TIMER_0_IRQ,NULL,handle_timer_interrupt);
 	
 	
