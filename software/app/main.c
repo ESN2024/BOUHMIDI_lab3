@@ -85,19 +85,21 @@ void affiche(__int32_t data_in)
 	int dis;
 	int cen;
 	int mil;
+	int dmil;
 	int data1;
 	int data2;
 		
-	mil = data_in / 1000;
-	cen = data_in / 100;
+	dmil = data_in / 10000;
+	mil = (data_in / 1000) % 10;
+	cen = (data_in / 100) % 10;
 	dis = (data_in /10 ) % 10;
 	unit = data_in % 10;
 	data1 = (cen << 8) | (dis << 4) | unit;
 	
 	if (data_in < 0)
-		data2 = 0b11110000 | mil;
+		data2 = 0b111100000000 | (dmil << 4) | mil;
 	else 
-		data2 = mil;
+		data2 = (dmil << 4) | mil;
 	IOWR_ALTERA_AVALON_PIO_DATA(SEG_1_BASE,data1);
 	IOWR_ALTERA_AVALON_PIO_DATA(SEG_2_BASE,data2);
 	
