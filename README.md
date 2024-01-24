@@ -16,6 +16,14 @@ En plus du Opencore I2C permettant la communication avec le gyroscope :
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/c3f783c9-6827-444d-9444-b6808dd82b09)
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/f013be6e-298a-4293-9599-b467486bfaf5)
 
+## Reécriture des fonction read et write 
+### Fonction read
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/4b94711a-96d4-460b-9553-29c6a1acad88)
+
+### Fonction write
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/9202ffeb-b560-41c6-a0b5-90ab43ef16ef)
 
 
 
