@@ -22,9 +22,21 @@ En plus du Opencore I2C permettant la communication avec le gyroscope :
 
 ## Affichage des données sur le shell nios 
 Affichage des données avec le timer cadencé à 1s
+
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/7da6dbf7-6eda-432e-b2e4-629c9d0dbe12)
 
 
 ## Ajout interruption du BP pour changer d'axe
+### Architecture QSYS
+On permet au SELECT représentant le BP, de générer des interruption avec une priorité plus faible que celle du timer : 
+
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/5d00a569-e319-4585-afed-54c68a3aa7d1)
+
+### ISR du BP
+L'ISR enclanchée par le BP incrémente une variable globale, entre 0 et 2, permettant de choisir l'axe à afficher, à savoir 0 pour X, 1 pour Y et 2 pour Z :
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/b3a23163-6b95-4845-bbb0-c9af97df4df8)
+
+La valeur SELECT est utilisée par une autre ISR, celle du timer, permettant d'afficher les données selon l'axe choisi.
+
 
