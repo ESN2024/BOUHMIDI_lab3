@@ -17,6 +17,12 @@ En plus du Opencore I2C permettant la communication avec le gyroscope :
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/f013be6e-298a-4293-9599-b467486bfaf5)
 
 ## Reécriture des fonction read et write 
+
+En suivant les trames suivantes :
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/b3f340be-e281-41cf-9686-1f3199d255de)
+
+
 ### Fonction read
 
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/4b94711a-96d4-460b-9553-29c6a1acad88)
@@ -26,6 +32,18 @@ En plus du Opencore I2C permettant la communication avec le gyroscope :
 ![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/9202ffeb-b560-41c6-a0b5-90ab43ef16ef)
 
 
+## Read les registres de données
+On a d'après la doc les différents registres donnant accès aux données suivant les 3 axes :
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/a1c57a3f-e181-4ca8-a220-64f2ee037e58)
+
+On définit ces registre dans notre code :
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/5e9ab7de-1a5b-414f-830f-891568b6e6e7)
+
+On peut alors accèder aux données présentes dans les registres, et les lire grâce à la fonction I2C_read_gyro :
+
+![image](https://github.com/ESN2024/BOUHMIDI_lab3/assets/144927751/9027bd21-88ad-45dd-ae82-b2af926ccd2b)
 
 
 ## Affichage des données sur le shell nios 
